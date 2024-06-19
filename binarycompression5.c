@@ -93,11 +93,20 @@ int *datatransfertointarry(struct data_transfer *data)
     printf("\ndecode temp_combine: %d\n", temp_combine);
     bin(temp_combine);
 
-    data_ary[0] = temp_combine & 0b111111; // 6 bit
-    temp_combine >> 8;
-    data_ary[1] = temp_combine & 0b111111111; // 9 bit
-    temp_combine >> 8;
-    data_ary[2] = temp_combine & 0b111111111; // 9 bit
+    data_ary[2] = temp_combine & 0b111111111; // copy 9 bit
+    printf("\n data 3: %d", data_ary[2]);
+    temp_combine = temp_combine >> 9;
+    data_ary[2]  = data_ary[2] << 2;// to 11 bit, times 4
+
+    data_ary[1] = temp_combine & 0b111111111; // copy 9 bit
+    printf("\n data 2: %d", data_ary[1]);
+    temp_combine = temp_combine >> 9;
+    data_ary[1] = data_ary[1] << 2; // to 11 bit, times 4
+
+    data_ary[0] = temp_combine & 0b111111; //copy 6 bit
+    printf("\n data 1: %d\n", data_ary[0]);
+    // temp_combine =  temp_combine >> 6;
+    data_ary[0] = data_ary[0] << 2; //to 11 bit, times 4
 
     printf("\n data 1: %d", data_ary[0]);
     printf("\n data 2: %d", data_ary[1]);
