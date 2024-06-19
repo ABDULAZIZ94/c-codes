@@ -29,14 +29,14 @@ int main()
     printf("\n%d\n", voltage);
 
     // energy = (energy - (energy % 3)) / 3;
-    energy = energy >> 2; //cut 2 bit
+    energy = energy >> 2; // cut 2 bit
     data_combine += energy;
     data_combine = data_combine << 9; // give 9 bits space to next 9 bits of current
     bin(energy);
     printf("\n%d\n", energy);
 
     // current = (current - (current % 3)) / 3;
-    current = current >> 2; //cut bit
+    current = current >> 2; // cut bit
     data_combine += current;
     bin(current);
     printf("\n%d\n", current);
@@ -93,11 +93,11 @@ int *datatransfertointarry(struct data_transfer *data)
     printf("\ndecode temp_combine: %d\n", temp_combine);
     bin(temp_combine);
 
-    data_ary[0] = temp_combine & 0b111111; //6 bit
+    data_ary[0] = temp_combine & 0b111111; // 6 bit
     temp_combine >> 8;
-    data_ary[1] = temp_combine & 0b111111111; //9 bit
+    data_ary[1] = temp_combine & 0b111111111; // 9 bit
     temp_combine >> 8;
-    data_ary[2] = temp_combine & 0b111111111; //9 bit
+    data_ary[2] = temp_combine & 0b111111111; // 9 bit
 
     printf("\n data 1: %d", data_ary[0]);
     printf("\n data 2: %d", data_ary[1]);
