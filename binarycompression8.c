@@ -3,7 +3,7 @@
 
 void bin(unsigned n);
 struct data_transfer *binarytocharary(unsigned long data);
-int *datatransfertointarry(struct data_transfer *data);
+unsigned int *datatransfertointarry(struct data_transfer *data);
 
 struct data_transfer
 {
@@ -18,40 +18,46 @@ int main()
     int energy = 1450;  // 2 bytes
     int current = 1580; // 2 bytes
     struct data_transfer *data;
-    int *decoded_data;
+    unsigned int *decoded_data;
     unsigned long data_combine = 0L;
+    unsigned int decoded_int_ary[3] = {};
 
     // voltage = (voltage - (voltage % 3)) / 3;
     voltage = voltage >> 2; // cut 2 bit
     data_combine += voltage;
     data_combine = data_combine << 9; // give bit space to next 9 bits of energy
     // bin(voltage);
-    // printf("\n%d\n", voltage);
+    printf("\nVoltage mod 4: %d\n", voltage);
 
     // energy = (energy - (energy % 3)) / 3;
     energy = energy >> 2; // cut 2 bit
     data_combine += energy;
     data_combine = data_combine << 9; // give 9 bits space to next 9 bits of current
     // bin(energy);
-    // printf("\n%d\n", energy);
+    printf("\nEnergy mod 4: %d\n", energy);
 
     // current = (current - (current % 3)) / 3;
     current = current >> 2; // cut bit
     data_combine += current;
     // bin(current);
-    // printf("\n%d\n", current);
+    printf("\nCurrent mod 4: %d\n", current);
 
     // printf("\nData Combine: %d\n", data_combine);
     data = binarytocharary(data_combine);
-
     printf("\nFirst Byte: %d\n", data->first_byte);
-    printf("Second Byte: %d\n", data->second_byte);
-    printf("Third Byte: %d\n", data->third_byte);
+    printf("\nSecond Byte: %d\n", data->second_byte);
+    printf("\nThird Byte: %d\n", data->third_byte);
 
     decoded_data = datatransfertointarry(data);
-    // printf("\nDecoded data 1: %d", decoded_data);
-    // printf("\nDecoded data 2: %d", decoded_data);
-    // printf("\nDecoded data 3: %d\n", decoded_data);
+
+    decoded_int_ary[2] = decoded_data[2];
+    decoded_int_ary[1] = decoded_data[1];
+    decoded_int_ary[0] = decoded_data[0];
+
+    printf("\nDecoded data 1: %d\n", decoded_int_ary[2]);
+    printf("\nDecoded data 2: %d\n", decoded_int_ary[1]);
+    printf("\nDecoded data 3: %d\n", decoded_int_ary[0]);
+
     return 0;
 }
 
@@ -75,11 +81,11 @@ struct data_transfer *binarytocharary(unsigned long data)
     return data_trans;
 }
 
-int *datatransfertointarry(struct data_transfer *data)
+unsigned int *datatransfertointarry(struct data_transfer *data)
 {
     unsigned long temp_combine = 0L;
     unsigned int data_ary[3];
-    int *data_ary_ptr = &data_ary;
+    unsigned int *data_ary_ptr = data_ary;
     int accurancy = 2;
 
     temp_combine = data->first_byte | temp_combine;
@@ -97,21 +103,26 @@ int *datatransfertointarry(struct data_transfer *data)
     data_ary[2] = temp_combine & 0b111111111; // copy 9 bit
     // printf("\n data 3: %d", data_ary[2]);
     temp_combine = temp_combine >> 9;
-    data_ary[2]  = data_ary[2] << 2;// to 11 bit, times 4
+    data_ary[2] = data_ary[2] << 2; // to 11 bit, times 4
 
     data_ary[1] = temp_combine & 0b111111111; // copy 9 bit
     // printf("\n data 2: %d", data_ary[1]);
     temp_combine = temp_combine >> 9;
     data_ary[1] = data_ary[1] << 2; // to 11 bit, times 4
 
-    data_ary[0] = temp_combine & 0b111111; //copy 6 bit
+    data_ary[0] = temp_combine & 0b111111; // copy 6 bit
     // printf("\n data 1: %d\n", data_ary[0]);
     // temp_combine =  temp_combine >> 6;
-    data_ary[0] = data_ary[0] << 2; //to 11 bit, times 4
+    data_ary[0] = data_ary[0] << 2; // to 11 bit, times 4
 
-    // printf("\n data 1: %d",(int) data_ary[0]+accurancy);
-    // printf("\n data 2: %d",(int) data_ary[1]+accurancy);
-    // printf("\n data 3: %d\n",(int) data_ary[2]+accurancy);
+    // add accuracy
+    data_ary[0] = data_ary[0] + accurancy;
+    data_ary[1] = data_ary[1] + accurancy;
+    data_ary[2] = data_ary[2] + accurancy;
+
+    // printf("\ndfi data 1: %d",(int) data_ary[0]);
+    // printf("\ndfi data 2: %d",(int) data_ary[1]);
+    // printf("\ndfi data 3: %d\n",(int) data_ary[2]);
     return data_ary_ptr;
 }
 
