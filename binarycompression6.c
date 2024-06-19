@@ -97,21 +97,21 @@ int *datatransfertointarry(struct data_transfer *data)
     data_ary[2] = temp_combine & 0b111111111; // copy 9 bit
     printf("\n data 3: %d", data_ary[2]);
     temp_combine = temp_combine >> 9;
-    data_ary[2]  = data_ary[2] << 2;// to 11 bit, times 4
+    data_ary[2] = data_ary[2] << 2; // to 11 bit, times 4
 
     data_ary[1] = temp_combine & 0b111111111; // copy 9 bit
     printf("\n data 2: %d", data_ary[1]);
     temp_combine = temp_combine >> 9;
     data_ary[1] = data_ary[1] << 2; // to 11 bit, times 4
 
-    data_ary[0] = temp_combine & 0b111111; //copy 6 bit
+    data_ary[0] = temp_combine & 0b111111; // copy 6 bit
     printf("\n data 1: %d\n", data_ary[0]);
     // temp_combine =  temp_combine >> 6;
-    data_ary[0] = data_ary[0] << 2; //to 11 bit, times 4
+    data_ary[0] = data_ary[0] << 2; // to 11 bit, times 4
 
-    printf("\n data 1: %d",(int) data_ary[0]+accurancy);
-    printf("\n data 2: %d",(int) data_ary[1]+accurancy);
-    printf("\n data 3: %d\n",(int) data_ary[2]+accurancy);
+    printf("\n data 1: %d", (int)data_ary[0] + accurancy);
+    printf("\n data 2: %d", (int)data_ary[1] + accurancy);
+    printf("\n data 3: %d\n", (int)data_ary[2] + accurancy);
     return data_ary_ptr;
 }
 
